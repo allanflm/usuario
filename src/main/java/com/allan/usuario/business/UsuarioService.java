@@ -3,6 +3,7 @@ package com.allan.usuario.business;
 import com.allan.usuario.business.converter.UsuarioConverter;
 import com.allan.usuario.business.dto.UsuarioDTO;
 import com.allan.usuario.infrastructure.entity.Usuario;
+import com.allan.usuario.infrastructure.excptions.ResourceNotFoundException;
 import com.allan.usuario.infrastructure.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,5 +18,15 @@ public class UsuarioService {
         Usuario usuario = usuarioConverter.paraUsuario(usuarioDTO);
         return  usuarioConverter.paraUsuarioDTO(
                 usuarioRepository.save(usuario));
+    }
+
+    public Usuario buscarUsuarioPorEmail(String email){
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Usuário não encontrado com o email: " + email
+                ));
+    }
+    public void deletarUsuarioPorEmail(String email){
+        usuarioRepository.deleteByEmail(email);
     }
 }
