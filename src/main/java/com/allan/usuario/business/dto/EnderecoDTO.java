@@ -1,9 +1,5 @@
 package com.allan.usuario.business.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.*;
 
 @Getter
@@ -13,6 +9,7 @@ import lombok.*;
 @Builder
 public class EnderecoDTO {
 
+    private Long id;
     private String rua;
     private Long numero;
     private String complemento;

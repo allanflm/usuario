@@ -1,6 +1,8 @@
 package com.allan.usuario.controller;
 
 import com.allan.usuario.business.UsuarioService;
+import com.allan.usuario.business.dto.EnderecoDTO;
+import com.allan.usuario.business.dto.TelefoneDTO;
 import com.allan.usuario.business.dto.UsuarioDTO;
 import com.allan.usuario.infrastructure.entity.Usuario;
 import com.allan.usuario.infrastructure.security.JwtUtil;
@@ -38,7 +40,7 @@ public class UsuarioControlller {
     }
 
     @GetMapping
-    public ResponseEntity<Usuario> buscarUsuarioPorEmail(@RequestParam("email") String email){
+    public ResponseEntity<UsuarioDTO> buscarUsuarioPorEmail(@RequestParam("email") String email){
         return ResponseEntity.ok(usuarioService.buscarUsuarioPorEmail(email));
     }
 
@@ -47,4 +49,25 @@ public class UsuarioControlller {
         usuarioService.deletarUsuarioPorEmail(email);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping
+    public ResponseEntity<UsuarioDTO> atualizaDadosUsuario(@RequestBody UsuarioDTO dto,
+                                                           @RequestHeader("Authorization") String token){
+
+        return ResponseEntity.ok(usuarioService.atualizaDadosUsuario(token, dto));
+    }
+
+    @PutMapping("/endereco")
+    public ResponseEntity<EnderecoDTO> atualizaEnderecoUsuario(@RequestBody EnderecoDTO enderecoDTO,
+                                                           @RequestParam("id") Long id){
+
+        return ResponseEntity.ok(usuarioService.atualizaEndereco(id, enderecoDTO));
+    }
+    @PutMapping("/telefone")
+    public ResponseEntity<TelefoneDTO> atualizaEnderecoUsuario(@RequestBody TelefoneDTO telefoneDTO,
+                                                               @RequestParam("id") Long id){
+
+        return ResponseEntity.ok(usuarioService.atualizaTelefone(id, telefoneDTO));
+    }
+
 }
