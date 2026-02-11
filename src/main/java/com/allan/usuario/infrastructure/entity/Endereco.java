@@ -1,4 +1,5 @@
 package com.allan.usuario.infrastructure.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,5 +34,8 @@ public class Endereco {
 
     @Column(name = "cep", length = 9)
     private String cep;
+
+    @Column(name = "usuario_id")
+    private Long usuarioId;
 
 }

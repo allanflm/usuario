@@ -1,5 +1,7 @@
 package com.allan.usuario.infrastructure.security;
 
+import com.allan.usuario.infrastructure.security.JwtRequestFilter;
+import com.allan.usuario.infrastructure.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
