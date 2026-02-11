@@ -10,6 +10,7 @@ import com.allan.usuario.infrastructure.entity.Usuario;
 import com.allan.usuario.infrastructure.excptions.ResourceNotFoundException;
 import com.allan.usuario.infrastructure.repository.EnderecoRepository;
 import com.allan.usuario.infrastructure.repository.TelefoneRepository;
+import com.allan.usuario.infrastructure.exception.ConflictException;
 import com.allan.usuario.infrastructure.repository.UsuarioRepository;
 import com.allan.usuario.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,11 @@ public class UsuarioService {
     public UsuarioDTO salvaUsuario(UsuarioDTO usuarioDTO) {
         usuarioDTO.setSenha(passwordEncoder.encode(usuarioDTO.getSenha()));
 
+    private final PasswordEncoder passwordEncoder;
+
+    public UsuarioDTO salvaUsuario(UsuarioDTO usuarioDTO) {
+        emailExiste(usuarioDTO.getEmail());
+        usuarioDTO.setSenha(passwordEncoder.encode(usuarioDTO.getSenha()));
         Usuario usuario = usuarioConverter.paraUsuario(usuarioDTO);
 
         return usuarioConverter.paraUsuarioDTO(
@@ -110,4 +116,18 @@ public class UsuarioService {
         return usuarioConverter.paraTelefoneDTO(telefoneEntity);
     }
 
+    public boolean verificaEmailExistente(String email){
+        return usuarioRepository.existsByEmail(email);
+    }
+
+    public void emailExiste(String email){
+        try{
+            boolean exite = verificaEmailExistente(email);
+            if(exite){
+                throw new ConflictException("Email ja exitente: " + email);
+            }
+        }catch (ConflictException e){
+            throw new ConflictException("Email ja cadastrado:" + e.getCause());
+        }
+    }
 }
